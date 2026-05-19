@@ -35,6 +35,18 @@ body {
   display: inline-block;
 }
 
+/* ── Name glitch / chromatic aberration ────────────────────────── */
+@keyframes glitch {
+  0%, 95%, 100% { transform: translate(0);      text-shadow: none; }
+  96%           { transform: translate(-2px, 0); text-shadow:  2px 0 #ff0000, -2px 0 #0000ff; }
+  97%           { transform: translate( 2px, 0); text-shadow: -2px 0 #ff0000,  2px 0 #0000ff; }
+  98%           { transform: translate(-1px, 0); text-shadow:  1px 0 #ff0000; clip-path: inset(10% 0 80% 0); }
+  99%           { transform: translate( 1px, 0); text-shadow: none; clip-path: inset(60% 0 10% 0); }
+}
+.glitch-name {
+  animation: glitch 4s infinite;
+}
+
 /* Marquee */
 @keyframes marquee-left {
   to { transform: translateX(-50%); }

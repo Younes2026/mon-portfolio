@@ -30,12 +30,12 @@ export default function Skills() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.skills-header > *', {
-        y: 40, opacity: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out',
+        y: 40, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
         scrollTrigger: { trigger: '.skills-header', start: 'top 82%' },
       })
       gsap.from('.cat-block', {
         y: 40, opacity: 0, duration: 0.7, stagger: 0.2, ease: 'power3.out',
-        scrollTrigger: { trigger: '.skills-categories', start: 'top 80%' },
+        scrollTrigger: { trigger: '.skills-categories', start: 'top 82%' },
       })
     }, sectionRef)
     return () => ctx.revert()
@@ -43,22 +43,39 @@ export default function Skills() {
 
   return (
     <section ref={sectionRef} id="skills" className="relative py-36 overflow-hidden">
+
+      {/* Subtle dot-grid background pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.03,
+          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+
+      {/* Ambient side glow */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 50%, rgba(99,102,241,0.06) 0%, transparent 70%)' }} />
 
-      {/* Header */}
+      {/* ── Section title ── */}
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         <div className="skills-header mb-20 text-center">
-          <p className="text-xs tracking-[0.35em] uppercase text-indigo-400 font-medium mb-4">
-            What I Work With
-          </p>
-          <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-bold tracking-tight">
-            Skills &amp; Tools
+          <h2 className="text-[clamp(2.2rem,5vw,4rem)] font-black tracking-tight uppercase mb-5">
+            Mes Compétences
           </h2>
+          {/* Glowing underline */}
+          <div
+            className="mx-auto w-28 h-1 rounded-full"
+            style={{
+              background:  '#6366f1',
+              boxShadow:   '0 0 16px #6366f1, 0 0 40px rgba(99,102,241,0.45)',
+            }}
+          />
         </div>
       </div>
 
-      {/* Marquee */}
+      {/* ── Marquee ── */}
       <div className="marquee-wrap mb-20 space-y-5 overflow-hidden select-none">
         <div className="flex">
           <div className="marquee-track flex flex-none gap-10 whitespace-nowrap"
@@ -84,35 +101,54 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* Categories + pills */}
-      <div className="skills-categories relative z-10 max-w-6xl mx-auto px-6 space-y-12">
+      {/* ── Category blocks ── */}
+      <div className="skills-categories relative z-10 max-w-6xl mx-auto px-6 space-y-14">
         {CATEGORIES.map(({ name, skills }) => (
           <div key={name} className="cat-block">
-            <p className="text-xs tracking-[0.3em] uppercase text-gray-500 font-medium mb-5">
-              {name}
-            </p>
+
+            {/* Category title — bigger, left accent border */}
+            <div className="mb-6">
+              <p
+                className="text-base font-bold tracking-[0.22em] uppercase text-white py-1 pl-4 mb-3"
+                style={{ borderLeft: '3px solid #6366f1' }}
+              >
+                {name}
+              </p>
+              {/* Gradient rule under title */}
+              <div className="h-px bg-gradient-to-r from-indigo-500/50 via-indigo-500/10 to-transparent" />
+            </div>
+
+            {/* Pills */}
             <div className="flex flex-wrap gap-3">
               {skills.map(skill => (
                 <span
                   key={skill}
-                  className="skill-tag"
+                  className="skill-pill"
                   style={{
-                    display: 'inline-block',
-                    padding: '6px 16px',
-                    borderRadius: '999px',
-                    border: '1px solid #6366f1',
-                    background: 'transparent',
-                    color: '#ffffff',
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    cursor: 'default',
-                    transition: 'background 0.3s ease, color 0.3s ease',
+                    display:       'inline-block',
+                    padding:       '7px 18px',
+                    borderRadius:  '999px',
+                    border:        '1px solid #6366f1',
+                    background:    'transparent',
+                    color:         '#ffffff',
+                    fontSize:      '0.875rem',
+                    fontWeight:    500,
+                    transition:    'all 0.3s ease',
+                    userSelect:    'none',
                   }}
                   onMouseEnter={e => {
-                    (e.currentTarget as HTMLSpanElement).style.background = '#6366f1'
+                    const el = e.currentTarget as HTMLSpanElement
+                    el.style.background   = 'linear-gradient(135deg, #6366f1, #8b5cf6)'
+                    el.style.transform    = 'scale(1.1)'
+                    el.style.boxShadow    = '0 0 20px rgba(99,102,241,0.65)'
+                    el.style.borderColor  = 'transparent'
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLSpanElement).style.background = 'transparent'
+                    const el = e.currentTarget as HTMLSpanElement
+                    el.style.background   = 'transparent'
+                    el.style.transform    = 'scale(1)'
+                    el.style.boxShadow    = 'none'
+                    el.style.borderColor  = '#6366f1'
                   }}
                 >
                   {skill}

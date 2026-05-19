@@ -18,8 +18,17 @@ const particles = Array.from({ length: 55 }, (_, i) => ({
   opacity: rand(i, 5) * 0.18 + 0.04,
 }))
 
+const SCRAMBLE_POOL = '!<>-_\\/[]{}=+*^?#@$%&'
+const scrambleChar  = () => SCRAMBLE_POOL[Math.floor(Math.random() * SCRAMBLE_POOL.length)]
+
 const NAME   = 'Younes Ait Braym'
-const TITLES = ['Full Stack Developer', 'Software Engineer', 'Mobile Developer']
+const TITLES = [
+  'Full Stack Developer',
+  '< Software Engineer />',
+  '{ Mobile Developer }',
+  '// Problem Solver',
+  'const coder = true;',
+]
 
 export default function Hero() {
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -37,22 +46,59 @@ export default function Hero() {
     return () => ctx.revert()
   }, [])
 
-  // Cycling typewriter
+  // Cycling typewriter with scramble effect
   useEffect(() => {
-    let cancelled = false, idx = 0, text = '', erasing = false
+    let cancelled                                             = false
+    let idx                                                   = 0
+    let phase: 'scrambling' | 'waiting' | 'erasing'          = 'scrambling'
+    let scrambleStart: number | null                          = null
+    let eraseCount                                            = 0
+
     function step() {
       if (cancelled) return
       const target = TITLES[idx]
-      if (!erasing && text.length < target.length) {
-        text += target[text.length]; setTyped(text); setTimeout(step, 55)
-      } else if (!erasing) {
-        setTimeout(() => { erasing = true; step() }, 2200)
-      } else if (text.length > 0) {
-        text = text.slice(0, -1); setTyped(text); setTimeout(step, 30)
-      } else {
-        idx = (idx + 1) % TITLES.length; erasing = false; setTimeout(step, 350)
+
+      if (phase === 'scrambling') {
+        // Initialise timer on first call of this phase
+        if (scrambleStart === null) scrambleStart = Date.now()
+
+        const progress = Math.min(1, (Date.now() - scrambleStart) / 1200)
+        const locked   = Math.floor(progress * target.length)
+
+        // Locked chars show real letters; remaining chars scramble every tick
+        setTyped(
+          target.slice(0, locked) +
+          Array.from({ length: target.length - locked }, scrambleChar).join('')
+        )
+
+        if (progress >= 1) {
+          setTyped(target)       // lock the final word cleanly
+          scrambleStart = null
+          phase         = 'waiting'
+          setTimeout(step, 2200) // pause before erasing
+        } else {
+          setTimeout(step, 40)   // re-scramble ~25 fps
+        }
+
+      } else if (phase === 'waiting') {
+        phase      = 'erasing'
+        eraseCount = target.length
+        step()                   // start erasing immediately
+
+      } else {                   // erasing
+        if (eraseCount > 0) {
+          eraseCount--
+          setTyped(target.slice(0, eraseCount))
+          setTimeout(step, 30)
+        } else {
+          idx           = (idx + 1) % TITLES.length
+          phase         = 'scrambling'
+          scrambleStart = null
+          setTimeout(step, 350)  // brief pause before next word
+        }
       }
     }
+
     const t = setTimeout(step, 1000)
     return () => { cancelled = true; clearTimeout(t) }
   }, [])
@@ -96,7 +142,7 @@ export default function Hero() {
           Disponible · Casablanca, Maroc
         </p>
 
-        <h1 ref={titleRef} className="text-[clamp(2.6rem,8vw,7rem)] font-bold leading-none tracking-tight">
+        <h1 ref={titleRef} className="text-[clamp(2.6rem,8vw,7rem)] font-bold leading-none tracking-tight glitch-name">
           {NAME.split('').map((char, i) =>
             char === ' '
               ? <span key={i} style={{ display: 'inline-block', width: '0.28em' }} />
@@ -116,6 +162,7 @@ export default function Hero() {
 
         <div ref={ctaRef} className="flex flex-wrap items-center gap-4 justify-center">
           <button ref={btnRef} onMouseMove={onBtnMove} onMouseLeave={onBtnLeave}
+            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             className="group relative mt-4 px-9 py-4 text-xs font-semibold tracking-[0.25em] uppercase
                        border border-indigo-500/60 text-indigo-300 overflow-hidden
                        transition-colors duration-300 hover:text-white">
