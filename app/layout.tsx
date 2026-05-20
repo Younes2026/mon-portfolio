@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'Younes Ait Braym' }],
   icons: {
     icon: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   openGraph: {
     title: 'Younes Ait Braym | Développeur Full Stack & Mobile',
