@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Younes Ait Braym — Portfolio',
   description: 'Élève-Ingénieur Full Stack | EMSI Casablanca',
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
