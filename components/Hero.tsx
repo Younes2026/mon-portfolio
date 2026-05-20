@@ -160,7 +160,7 @@ export default function Hero() {
             style={{ opacity: caretVisible ? 1 : 0, transition: 'opacity 0.05s' }} />
         </p>
 
-        <div ref={ctaRef} className="flex flex-wrap items-center gap-4 justify-center">
+        <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-4">
           <button ref={btnRef} onMouseMove={onBtnMove} onMouseLeave={onBtnLeave}
             onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             className="group relative mt-4 px-9 py-4 text-xs font-semibold tracking-[0.25em] uppercase

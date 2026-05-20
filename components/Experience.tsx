@@ -60,14 +60,16 @@ export default function Experience() {
                 {/* Company initials badge */}
                 <div
                   className="absolute left-[8px] top-0 w-9 h-9 rounded-full border-2 border-[#0a0a0a]
-                             flex items-center justify-center text-[10px] font-black leading-none"
+                             flex items-center justify-center text-[8px] font-black leading-none"
                   style={{ background: accent, color: '#fff', boxShadow: `0 0 16px ${accent}60` }}
                 >
-                  {company.slice(0, 3)}
+                  {company}
                 </div>
 
-                <div className="border border-white/[0.07] rounded-sm p-6 bg-white/[0.02]
+                <div className="relative group border border-white/[0.07] rounded-sm p-6 bg-white/[0.02]
                                hover:border-white/15 hover:bg-white/[0.04] transition-all duration-300">
+                  <span className="absolute left-0 top-0 h-full w-[3px] bg-indigo-500 rounded-l-sm
+                                   opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
