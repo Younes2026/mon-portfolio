@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -47,15 +48,26 @@ const INPUT_CLS = `w-full px-4 py-3 rounded-sm bg-transparent border border-whit
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSent(true)
-    setForm({ name: '', email: '', message: '' })
+    setStatus('sending')
+    try {
+      await emailjs.send(
+        'service_m81t9jk',
+        'template_ss8g54s',
+        { name: form.name, email: form.email, message: form.message },
+        'LDTFuswdB4E1WYCMB',
+      )
+      setStatus('success')
+      setForm({ name: '', email: '', message: '' })
+    } catch {
+      setStatus('error')
+    }
   }
 
   useEffect(() => {
@@ -85,11 +97,11 @@ export default function Contact() {
 
           {/* Form */}
           <form onSubmit={onSubmit} className="contact-form flex flex-col gap-4">
-            {sent ? (
+            {status === 'success' ? (
               <div className="border border-green-500/30 rounded-sm p-8 text-center bg-green-500/5">
-                <p className="text-green-400 font-semibold text-lg">Message envoyé ✓</p>
+                <p className="text-green-400 font-semibold text-lg">Message envoyé avec succès ! ✓</p>
                 <p className="text-gray-500 text-sm mt-2">Je vous répondrai dans les plus brefs délais.</p>
-                <button type="button" onClick={() => setSent(false)}
+                <button type="button" onClick={() => setStatus('idle')}
                   className="mt-5 text-xs text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
                   Envoyer un autre message
                 </button>
@@ -99,14 +111,17 @@ export default function Contact() {
                 <input name="name"  value={form.name}    onChange={onChange} required placeholder="Nom complet"     className={INPUT_CLS} />
                 <input name="email" value={form.email}   onChange={onChange} required placeholder="Adresse email" type="email" className={INPUT_CLS} />
                 <textarea name="message" value={form.message} onChange={onChange} required placeholder="Votre message..." rows={5} className={INPUT_CLS + ' resize-none'} />
-                <button type="submit"
+                {status === 'error' && (
+                  <p className="text-red-400 text-xs">Erreur, veuillez réessayer.</p>
+                )}
+                <button type="submit" disabled={status === 'sending'}
                   className="group relative px-8 py-4 text-xs font-semibold tracking-[0.25em] uppercase
                              border border-indigo-500/60 text-indigo-300 overflow-hidden
-                             transition-colors duration-300 hover:text-white text-left">
+                             transition-colors duration-300 hover:text-white text-left disabled:opacity-50 disabled:cursor-not-allowed">
                   <span className="absolute inset-0 bg-indigo-600 -translate-x-full group-hover:translate-x-0
                                    transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]" />
                   <span className="relative flex items-center gap-3">
-                    Envoyer le message
+                    {status === 'sending' ? 'Envoi...' : 'Envoyer le message'}
                     <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
