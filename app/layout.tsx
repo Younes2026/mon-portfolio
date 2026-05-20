@@ -11,10 +11,20 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Younes Ait Braym — Portfolio',
-  description: 'Élève-Ingénieur Full Stack | EMSI Casablanca',
+  title: 'Younes Ait Braym | Développeur Full Stack & Mobile',
+  description: 'Portfolio de Younes Ait Braym, développeur Full Stack & Mobile basé à Casablanca, Maroc. Spécialisé en React, Next.js, React Native, Spring Boot.',
+  keywords: 'Younes Ait Braym, Tazalt, EMSI, développeur full stack, développeur mobile, React, Next.js, React Native, Casablanca, Maroc',
+  authors: [{ name: 'Younes Ait Braym' }],
   icons: {
     icon: '/favicon.svg',
+  },
+  openGraph: {
+    title: 'Younes Ait Braym | Développeur Full Stack & Mobile',
+    description: 'Portfolio de Younes Ait Braym, développeur Full Stack & Mobile basé à Casablanca, Maroc.',
+    url: 'https://younesaitbraym.com',
+    siteName: 'Younes Ait Braym Portfolio',
+    locale: 'fr_FR',
+    type: 'website',
   },
 }
 
