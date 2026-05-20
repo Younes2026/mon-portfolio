@@ -142,7 +142,7 @@ export default function Hero() {
           Disponible · Casablanca, Maroc
         </p>
 
-        <h1 ref={titleRef} className="text-[clamp(2.6rem,8vw,7rem)] font-bold leading-none tracking-tight glitch-name">
+        <h1 ref={titleRef} className="text-[clamp(1.6rem,7.5vw,7rem)] font-bold leading-none tracking-tight glitch-name">
           {NAME.split('').map((char, i) =>
             char === ' '
               ? <span key={i} style={{ display: 'inline-block', width: '0.28em' }} />

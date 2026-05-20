@@ -1,11 +1,17 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    setIsMobile(window.matchMedia('(hover: none) and (pointer: coarse)').matches)
+  }, [])
+
+  useEffect(() => {
+    if (isMobile) return
     const dot  = dotRef.current
     const ring = ringRef.current
     if (!dot || !ring) return
@@ -45,12 +51,14 @@ export default function CustomCursor() {
       document.removeEventListener('mouseover', onOver)
       document.removeEventListener('mouseout',  onOut)
     }
-  }, [])
+  }, [isMobile])
+
+  if (isMobile) return null
 
   return (
     <>
-      <div ref={dotRef} style={{ position: 'fixed', width: '8px', height: '8px', borderRadius: '50%', background: '#6366f1', pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%,-50%)', left: '-200px', top: '-200px' }} />
-      <div ref={ringRef} style={{ position: 'fixed', width: '40px', height: '40px', borderRadius: '50%', background: 'transparent', border: '2px solid #6366f1', pointerEvents: 'none', zIndex: 9998, transform: 'translate(-50%,-50%)', left: '-200px', top: '-200px', transition: 'width .2s,height .2s,background .2s,border-color .2s' }} />
+      <div ref={dotRef}  style={{ position: 'fixed', width: '8px',  height: '8px',  borderRadius: '50%', background: '#6366f1',    pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%,-50%)', left: '-200px', top: '-200px' }} />
+      <div ref={ringRef} style={{ position: 'fixed', width: '40px', height: '40px', borderRadius: '50%', background: 'transparent', pointerEvents: 'none', zIndex: 9998, transform: 'translate(-50%,-50%)', left: '-200px', top: '-200px', border: '2px solid #6366f1', transition: 'width .2s,height .2s,background .2s,border-color .2s' }} />
     </>
   )
 }
