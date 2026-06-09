@@ -160,7 +160,7 @@ export default function Hero() {
             style={{ opacity: caretVisible ? 1 : 0, transition: 'opacity 0.05s' }} />
         </p>
 
-        <div ref={ctaRef} className="flex flex-wrap items-center justify-center gap-4">
+        <div ref={ctaRef} className="flex justify-center">
           <button ref={btnRef} onMouseMove={onBtnMove} onMouseLeave={onBtnLeave}
             onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             className="group relative mt-4 px-9 py-4 text-xs font-semibold tracking-[0.25em] uppercase
@@ -177,17 +177,6 @@ export default function Hero() {
               </svg>
             </span>
           </button>
-
-          <a href="/cv.pdf" target="_blank" rel="noopener noreferrer"
-            className="mt-4 flex items-center gap-2 px-7 py-4 text-xs font-semibold tracking-[0.25em] uppercase
-                       border border-indigo-500 text-indigo-400
-                       hover:bg-indigo-600 hover:border-indigo-600 hover:text-white
-                       transition-all duration-300">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            Télécharger CV
-          </a>
         </div>
 
         <div className="flex items-center gap-5">
